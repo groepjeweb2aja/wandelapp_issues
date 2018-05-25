@@ -1,10 +1,42 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset=utf-8 />
     <title>Wandelapp</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <style>
+        input[type="file"] {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+            display: none;
+        }
+
+        .inputfile+label {
+            font-size: 1.00em;
+            font-weight: 700;
+            color: white;
+            background-color: rgb(202, 60, 60);
+            display: inline-block;
+            padding:10px;
+        }
+
+        .inputfile:focus+label,
+        .inputfile+label:hover {
+            background-color: red;
+        }
+
+        .inputfile+label {
+            cursor: pointer;
+            /* "hand" cursor */
+        }
+    </style>
 </head>
+
 <body>
 
     <!-- should be run on localhost -->
@@ -27,8 +59,8 @@
 
         <!-- Info & upload -->
         <div id="upload">
-            <input on-change="uploadgpx" type="file" id="file-input" />
-            <div id="info"></div>
+            <input  on-change="uploadgpx" type="file" name="file" id="file" class="inputfile" />
+            <label for="file">Upoad GPX File</label>
         </div>
 
     </script>
@@ -40,4 +72,5 @@
     <link rel="stylesheet" type="text/css" href="css/wandelapp.css" />
     <script src='js/app_es5.js'></script>
 </body>
+
 </html>
