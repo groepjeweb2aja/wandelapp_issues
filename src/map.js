@@ -3,35 +3,39 @@ import mapboxgl from 'mapbox-gl';
 class Mapboxgl {
     constructor(){
         mapboxgl.accessToken = 'pk.eyJ1IjoiZHZyaWV0IiwiYSI6ImNpbzlxdnEzMTAwMHB3Y201Ym9yOHgzc24ifQ.B8cRwcPdY0e28MI2gqP1aA';
-        return new mapboxgl.Map({
+        var map =  new mapboxgl.Map({
             container: 'map', // container id
             style: 'mapbox://styles/mapbox/streets-v8',
             center: [4.895168, 52.370216], // starting position
-            zoom: 9 // starting zoom
+            zoom: 9, // starting zoom
+            scrollZoom: false
         });
+        return map;
     }
 }
 
 export default class Map {
-
+    
     //Init
     constructor() {
         this.map = new Mapboxgl();
         this.defaultzoomlevel = 12;
         this.youarehere = null;
         this.el = document.createElement('div');
-        this.el.className = 'marker';
-
-
+        this.el.className = 'marker';        
+        
+        var nav = new mapboxgl.NavigationControl();
+        this.map.addControl(nav, 'top-left');
+        
         this.map.on('click', function (e) {
             const features = this.map.queryRenderedFeatures(e.point, { layers: ['poi'] });
             if (!features.length) {
                 return;
             }
-
+            
             const feature = features[0];
             console.log(feature);
-
+            
             const name = (feature.properties.name === undefined) ? '' : feature.properties.name;
             const desc = (feature.properties.desc === undefined) ? '' : feature.properties.desc;
             //Create and show popup
@@ -51,13 +55,13 @@ export default class Map {
         this.map.setCenter(lnglat);
         this.map.setZoom(this.defaultzoomlevel);
     }
-
+    
     //Show route and set events
     showroute(geo_json) {
         if(!geo_json) {
             return;
         }
-
+        
         //Remove old layers and sources
         try {
             this.map.removeLayer("poi");
@@ -68,7 +72,7 @@ export default class Map {
         catch(e){
             console.log('layer or source doesnt exist');
         }
-
+        
         /////
         // POI (points of interest)
         // https://www.mapbox.com/mapbox-gl-js/example/geojson-markers/
@@ -123,7 +127,7 @@ export default class Map {
             }
         });
 
-
+        
         //Center the route
         const c = [geo_json.features[0].geometry.coordinates[0][0], geo_json.features[0].geometry.coordinates[0][1]];
         this.center(c);

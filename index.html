@@ -39,6 +39,13 @@
 
 <body>
 
+<body>
+    <div style="position: absolute; top: 0; right: 0;z-index: 1;">
+        <select id="maptype">
+            <option value="map">Map</option>
+            <option value="sat">Satelite</option>
+        </select>
+    </div>
     <!-- should be run on localhost -->
 
     <!-- Ractive template -->
@@ -50,10 +57,10 @@
         <!-- Routes list -->
         <div id="accordion">
             {{#each hikes}}
-                <h1 on-click="['collapse', data._id, this]">wandeling {{data.json.features.0.properties.name}}</h1>
-                <div class="item" id="route{{data._id}}">
-                    {{data.json.features.0.properties.desc}}
-                </div>
+            <h1 on-click="['collapse', data._id, this]">wandeling {{data.json.features.0.properties.name}}</h1>
+            <div class="item" id="route{{data._id}}">
+                {{data.json.features.0.properties.desc}}
+            </div>
             {{/each}}
         </div>
 
@@ -65,12 +72,29 @@
 
     </script>
 
+
     <!-- Ractive div/template -->
     <div id='container'></div>
 
     <link rel="stylesheet" type="text/css" href="css/cssreset.css" />
     <link rel="stylesheet" type="text/css" href="css/wandelapp.css" />
+    <link rel="stylesheet" type="text/css" href="node_modules/mapbox-gl/dist/mapbox-gl.css" />
     <script src='js/app_es5.js'></script>
+
+    <script>
+        // console.log(map);
+        // const maptype = document.getElementById("maptype");
+        // maptype.addEventListener("change", function () {
+        //     if (maptype.value == "satelite") 
+        //         switchLayer("satellite");
+        //     else
+        //         switchLayer("streets");
+        // });
+
+        // function switchLayer(layer) {
+        //     map.setStyle('mapbox://styles/mapbox/' + layer + '-v9');
+        // }
+    </script>
 </body>
 
 </html>
