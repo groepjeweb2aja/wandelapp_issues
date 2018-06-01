@@ -26,19 +26,6 @@ body {
 #map {
     height: 100vh;
 }
-#upload {
-    overflow-y: auto;
-    transition: opacity .5s;
-    opacity: 1;
-    box-sizing: border-box;
-    position: absolute;
-    bottom: 0;
-    height: 15vw;
-    width: 100vw;
-    background-color: #ddd;
-    padding: 1em;
-    z-index: 102;
-}
  .marker {
      display: block;
      cursor: pointer;
@@ -47,3 +34,4 @@ body {
      width:20px;
      height:20px;
  }
+

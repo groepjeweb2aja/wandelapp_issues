@@ -1,4 +1,4 @@
-import * as $ from 'jquery';
+// import * as $ from 'jquery';
 
 /**
  * Read json from remoteserver
@@ -8,20 +8,38 @@ import * as $ from 'jquery';
 const getroutesjson = (remoteserver) => {
     return new Promise((resolve, reject) => { //New promise for array
         // let routesjson = [];
-        $.ajax({
-                type: "GET",
-                url: remoteserver,
-                dataType: "json"
-            })
-            .done((data) => {
-            console.log(data);
-                    const routesjson = data.map((f) => {
-                        return {data: f};
-                    });
-                    resolve(routesjson);
-                }
-            )
-            .fail((err) => reject(err));
+        fetch(remoteserver, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }).then(res => res.json())
+            .catch(error => reject(error))
+            .then(function (response) {
+                console.log(response);
+                const routesjson = response.map((f) => {
+                    return {
+                        data: f
+                    };
+                });
+                resolve(routesjson);
+            });
+
+        // $.ajax({
+        //         type: "GET",
+        //         url: remoteserver,
+        //         dataType: "json"
+        //     })
+        //     .done((data) => {
+        //         console.log(data);
+        //         const routesjson = data.map((f) => {
+        //             return {
+        //                 data: f
+        //             };
+        //         });
+        //         resolve(routesjson);
+        //     })
+        //     .fail((err) => reject(err));
     });
 };
 
@@ -45,7 +63,7 @@ const posttextfile = (remoteserver = "", file = "") => {
                     if (xhr.status === 200) {
                         const res = JSON.parse(xhr.response);
                         console.log(res);
-                        if(res.error === true){
+                        if (res.error === true) {
                             reject(res.msg);
                         } else {
                             resolve();
