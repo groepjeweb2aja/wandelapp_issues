@@ -1,6 +1,8 @@
-var CACHE_NAME = 'my-wandelapp-v1';
+var CACHE_NAME = 'my-wandelapp-v2';
 var urlsToCache = [
-    '/'
+    '/',
+    '/js/app_es5.js',
+    'https://nodejs-mongo-persistent-wandelappbackend-v4.a3c1.starter-us-west-1.openshiftapps.com'
 ];
 
 self.addEventListener('install', function(event) {
