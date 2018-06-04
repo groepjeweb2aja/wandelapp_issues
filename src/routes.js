@@ -1,4 +1,4 @@
-import * as $ from 'jquery';
+// import * as $ from 'jquery';
 
 /**
  * Read json from remoteserver
@@ -8,20 +8,22 @@ import * as $ from 'jquery';
 const getroutesjson = (remoteserver) => {
     return new Promise((resolve, reject) => { //New promise for array
         // let routesjson = [];
-        $.ajax({
-                type: "GET",
-                url: remoteserver,
-                dataType: "json"
-            })
-            .done((data) => {
-            console.log(data);
-                    const routesjson = data.map((f) => {
-                        return {data: f};
-                    });
-                    resolve(routesjson);
-                }
-            )
-            .fail((err) => reject(err));
+        fetch(remoteserver, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }).then(res => res.json())
+            .catch(error => reject(error))
+            .then(function (response) {
+                console.log(response);
+                const routesjson = response.map((f) => {
+                    return {
+                        data: f
+                    };
+                });
+                resolve(routesjson);
+            });
     });
 };
 
@@ -45,7 +47,7 @@ const posttextfile = (remoteserver = "", file = "") => {
                     if (xhr.status === 200) {
                         const res = JSON.parse(xhr.response);
                         console.log(res);
-                        if(res.error === true){
+                        if (res.error === true) {
                             reject(res.msg);
                         } else {
                             resolve();
@@ -64,6 +66,40 @@ const posttextfile = (remoteserver = "", file = "") => {
     });
 };
 
+
+/**
+ * Gets cuid from server
+ * @param remoteserver
+ * @returns cuid
+ */
+const getcuid = (remoteserver) => {
+    let cuid = localStorage.getItem("cuid");
+    console.log(cuid);
+    if (cuid == null || cuid === "") {
+        fetch(remoteserver + "/cuid", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }).then(res => res.json())
+            .catch(function (error) {
+                console.log(error);
+                return null;
+            })
+            .then(function (response) {
+                console.log(response);
+                cuid = response.cuid;
+                console.log(cuid);
+                localStorage.setItem('cuid', cuid);
+                return cuid;
+            });
+    } else {
+        return cuid;
+    }
+    return null;
+};
+
 //expose ajax functions
 exports.getroutesjson = getroutesjson;
 exports.posttextfile = posttextfile;
+exports.getcuid = getcuid;
