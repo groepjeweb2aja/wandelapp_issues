@@ -24,22 +24,6 @@ const getroutesjson = (remoteserver) => {
                 });
                 resolve(routesjson);
             });
-
-        // $.ajax({
-        //         type: "GET",
-        //         url: remoteserver,
-        //         dataType: "json"
-        //     })
-        //     .done((data) => {
-        //         console.log(data);
-        //         const routesjson = data.map((f) => {
-        //             return {
-        //                 data: f
-        //             };
-        //         });
-        //         resolve(routesjson);
-        //     })
-        //     .fail((err) => reject(err));
     });
 };
 
@@ -82,6 +66,40 @@ const posttextfile = (remoteserver = "", file = "") => {
     });
 };
 
+
+/**
+ * Gets cuid from server
+ * @param remoteserver
+ * @returns cuid
+ */
+const getcuid = (remoteserver) => {
+    let cuid = localStorage.getItem("cuid");
+    console.log(cuid);
+    if (cuid == null || cuid === "") {
+        fetch(remoteserver + "/cuid", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }).then(res => res.json())
+            .catch(function (error) {
+                console.log(error);
+                return null;
+            })
+            .then(function (response) {
+                console.log(response);
+                cuid = response.cuid;
+                console.log(cuid);
+                localStorage.setItem('cuid', cuid);
+                return cuid;
+            });
+    } else {
+        return cuid;
+    }
+    return null;
+};
+
 //expose ajax functions
 exports.getroutesjson = getroutesjson;
 exports.posttextfile = posttextfile;
+exports.getcuid = getcuid;
