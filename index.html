@@ -1,12 +1,57 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset=utf-8 />
     <title>Wandelapp</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#DDDDDD"/>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-</head>
-<body>
+    <style>
+        input[type="file"] {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+            display: none;
+        }
 
+        .inputfile+label {
+            font-size: 1.00em;
+            font-weight: 700;
+            color: white;
+            background-color: rgb(202, 60, 60);
+            display: inline-block;
+            padding:10px;
+        }
+
+        .inputfile:focus+label,
+        .inputfile+label:hover {
+            background-color: red;
+        }
+
+        .inputfile+label {
+            cursor: pointer;
+            /* "hand" cursor */
+        }
+    </style>
+</head>
+
+<body>
+    <noscript>
+        <!-- anchor linking to external file -->
+        <h1>No Script</h1>
+    </noscript>
+
+<body>
+    <div style="position: absolute; top: 0; right: 0;z-index: 1;">
+        <select id="maptype">
+            <option value="map">Map</option>
+            <option value="sat">Satelite</option>
+        </select>
+    </div>
     <!-- should be run on localhost -->
 
     <!-- Ractive template -->
@@ -18,26 +63,45 @@
         <!-- Routes list -->
         <div id="accordion">
             {{#each hikes}}
-                <h1 on-click="['collapse', data._id, this]">wandeling {{data.json.features.0.properties.name}}</h1>
-                <div class="item" id="route{{data._id}}">
-                    {{data.json.features.0.properties.desc}}
-                </div>
+            <h1 on-click="['collapse', data._id, this]">wandeling {{data.json.features.0.properties.name}}</h1>
+            <div class="item" id="route{{data._id}}">
+                {{data.json.features.0.properties.desc}}
+            </div>
             {{/each}}
         </div>
 
         <!-- Info & upload -->
         <div id="upload">
-            <input on-change="uploadgpx" type="file" id="file-input" />
+            <input  on-change="uploadgpx" type="file" name="file" id="file" class="inputfile" />
+            <label for="file">Upoad GPX File</label>
             <div id="info"></div>
         </div>
 
     </script>
+
 
     <!-- Ractive div/template -->
     <div id='container'></div>
 
     <link rel="stylesheet" type="text/css" href="css/cssreset.css" />
     <link rel="stylesheet" type="text/css" href="css/wandelapp.css" />
+    <link rel="stylesheet" type="text/css" href="node_modules/mapbox-gl/dist/mapbox-gl.css" />
     <script src='js/app_es5.js'></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('sw.js').then(function(registration) {
+                        // Registration was successful
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    }, function(err) {
+                        // registration failed :(
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+                });
+            }
+        });
+    </script>
 </body>
+
 </html>
