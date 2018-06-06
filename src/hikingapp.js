@@ -15,7 +15,8 @@ const hikingapp = (remoteserver) => {
     const ractive_ui = new Ractive({
         el: '#container',
         template: '#template',
-        debug: true
+        debug: true,
+        style: 'mapbox://styles/mapbox/streets-v10'
     });
 
     let map = null;
@@ -28,27 +29,13 @@ const hikingapp = (remoteserver) => {
 
         //New mapbox-gl map
         map = new Map();
-        const geo_options = {
-            enableHighAccuracy: true,
-            maximumAge: 1000,
-            timeout: 10000
-        };
+        // const geo_options = {
+        //     enableHighAccuracy: true,
+        //     maximumAge: 1000,
+        //     timeout: 10000
+        // };
 
-        function switchLayer(layer) {
-            map.map.setStyle('mapbox://styles/mapbox/' + layer);
-        }
-        console.log(map);
-        const maptype = document.getElementById("maptype");
-        maptype.addEventListener("change", function () {
-            if (maptype.value === "sat") {
-                switchLayer("satellite-v9");
-                console.log("satellite-v9");
-            } else {
-                switchLayer("streets-v10");
-                console.log("streets-v10");
-            }
-        });
-
+       
 
         //Get routes from server and show these as choices
         getroutesjson(remoteserver + '/routes?cuid=' + cuid)
@@ -68,7 +55,7 @@ const hikingapp = (remoteserver) => {
             );
 
         //Update device location on map
-        navigator.geolocation.watchPosition(map.geo_success.bind(map), null, geo_options);
+        // navigator.geolocation.watchPosition(map.geo_success.bind(map), null, geo_options);
     });
 
     //Events

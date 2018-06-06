@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#DDDDDD"/>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <style>
-        input[type="file"] {
+        /* input[type="file"] {
             width: 0.1px;
             height: 0.1px;
             opacity: 0;
@@ -35,7 +35,7 @@
         .inputfile+label {
             cursor: pointer;
             /* "hand" cursor */
-        }
+        /* } */
     </style>
 </head>
 
@@ -46,12 +46,12 @@
     </noscript>
 
 <body>
-    <div style="position: absolute; top: 0; right: 0;z-index: 1;">
+    <!-- <div style="position: absolute; top: 0; right: 0;z-index: 1;">
         <select id="maptype">
             <option value="map">Map</option>
             <option value="sat">Satelite</option>
         </select>
-    </div>
+    </div> -->
     <!-- should be run on localhost -->
 
     <!-- Ractive template -->
@@ -59,7 +59,7 @@
 
         <!-- Mapbox -->
         <div id='map'></div>
-
+        
         <!-- Routes list -->
         <div id="accordion">
             {{#each hikes}}
@@ -69,7 +69,7 @@
             </div>
             {{/each}}
         </div>
-
+        
         <!-- Info & upload -->
         <div id="upload">
             <input  on-change="uploadgpx" type="file" name="file" id="file" class="inputfile" />
