@@ -48,6 +48,7 @@ const posttextfile = (remoteserver = "", file = "") => {
                         const res = JSON.parse(xhr.response);
                         console.log(res);
                         if (res.error === true) {
+                            console.log(res);
                             reject(res.msg);
                         } else {
                             resolve();
@@ -72,10 +73,10 @@ const posttextfile = (remoteserver = "", file = "") => {
  * @param remoteserver
  * @returns cuid
  */
-const getcuid = (remoteserver) => {
+const getcuid = (remoteserver, force = false) => {
     let cuid = localStorage.getItem("cuid");
     console.log(cuid);
-    if (cuid == null || cuid === "") {
+    if (cuid == null || cuid === "" || force) {
         fetch(remoteserver + "/cuid", {
                 method: 'GET',
                 headers: {

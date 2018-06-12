@@ -1,4 +1,4 @@
-var CACHE_NAME = 'my-wandelapp-v2';
+var CACHE_NAME = 'my-wandelapp-v2-blablabala';
 var urlsToCache = [
     '/',
     '/js/app_es5.js',

@@ -42,9 +42,14 @@ const hikingapp = (remoteserver) => {
             .then(
                 (routesjson) => {
                     ractive_ui.set("hikes", routesjson);
+                    console.log("SET HIKES");
                 },
                 (reason) => {
                     // Error retreiving routes!
+                    console.log("FAILED SETTING HIKES");
+                    if(reason === "cuid is invalid, ask for a new one on /cuid"){
+                        localStorage.removeItem('cuid');
+                    }
                     console.log(reason);
                 }
             )
@@ -96,19 +101,27 @@ const hikingapp = (remoteserver) => {
                                     },
                                     (reason) => {
                                         //error
+                                        console.log(reason + "Blala");
+                                        if(reason === "cuid is invalid, ask for a new one on /cuid"){
+                                            localStorage.removeItem('cuid');
+                                        }
                                         info.innerHTML = reason;
                                     }
                                 )
                                 .catch(
                                     (reason) => {
                                         //error
+                                        console.log(reason + "Blala");
+                                        if(reason === "cuid is invalid, ask for a new one on /cuid"){
+                                            localStorage.removeItem('cuid');
+                                        }
                                         info.innerHTML = reason;
                                     }
                                 );
                         }
                     )
                     .catch(
-                        (e) => {
+                        (e) => {                         
                             info.innerHTML = e;
                         }
                     );
