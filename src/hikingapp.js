@@ -63,6 +63,21 @@ const hikingapp = (remoteserver) => {
         // navigator.geolocation.watchPosition(map.geo_success.bind(map), null, geo_options);
     });
 
+    function displayinfo(text){
+        info.innerHTML = text;
+        info.style.visibility = 'visible';
+       
+        var timeleft = 10;
+        var downloadTimer = setInterval(function () {
+            --timeleft;
+            if (timeleft <= 0){
+                clearInterval(downloadTimer);
+                info.innerHTML = "";
+                info.style.visibility = 'hidden';
+            }
+        }, 1000);
+    }
+
     //Events
     ractive_ui.on({
         'collapse': (event, filename, routeobj) => {
@@ -85,16 +100,7 @@ const hikingapp = (remoteserver) => {
                             getroutesjson(remoteserver + '/routes?cuid=' + cuid)
                                 .then(
                                     (routesjson) => {
-                                        //Show success
-                                        var timeleft = 10;
-                                        var downloadTimer = setInterval(function () {
-                                            --timeleft;
-                                            if (timeleft <= 0){
-                                                clearInterval(downloadTimer);
-                                                info.innerHTML = "";
-                                            }
-                                        }, 1000);
-                                        info.innerHTML = "Route is toegevoegd";
+                                        displayinfo("Route is toegevoegd");
                                         ractive_ui.set("hikes", routesjson);
                                         //Show chosen route
                                         map.showroute(routesjson[routesjson.length - 1].data.json);
@@ -105,7 +111,7 @@ const hikingapp = (remoteserver) => {
                                         if(reason === "cuid is invalid, ask for a new one on /cuid"){
                                             localStorage.removeItem('cuid');
                                         }
-                                        info.innerHTML = reason;
+                                        displayinfo(reason);
                                     }
                                 )
                                 .catch(
@@ -115,7 +121,7 @@ const hikingapp = (remoteserver) => {
                                         if(reason === "cuid is invalid, ask for a new one on /cuid"){
                                             localStorage.removeItem('cuid');
                                         }
-                                        info.innerHTML = reason;
+                                        displayinfo(reason);
                                     }
                                 );
                         }
